@@ -11,13 +11,17 @@ import 'virtual:svg-icons-register'
 import globalComponent from './components/index';
 import '@/styles/index.scss'
 
-
+import router from './router'
+import pinia from './store'
 const app = createApp(App)
 app.use(ElementPlus, {
-    locale: zhCn,
-  })
-app.mount('#app')
+  locale: zhCn,
+})
+app.use(pinia)
+app.use(router)
 app.use(globalComponent)
 
-console.log(import.meta.env)
+app.mount('#app')
+
+
 
