@@ -3,10 +3,13 @@ import { reqLogin } from '@/api/user'
 import type { loginForm, loginResponseData } from '@/api/user/type'
 import type { userState } from './types/types'
 import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+import { constantRoute } from '@/router/routers'
+
 let useUserStore = defineStore('User', {
     state: (): userState => {
         return {
             token: GET_TOKEN(),
+            menuRouters: constantRoute,// 仓库存储菜单的路由
         }
     },
     actions: {
