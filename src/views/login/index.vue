@@ -3,13 +3,13 @@
     <el-row>
       <el-col :span="12" xs="0"></el-col>
       <el-col :span="12" xs="24">
-        <el-form class="login_form">
+        <el-form class="login_form" :model="loginForm" :rules="rules">
           <h1>Hello</h1>
           <h3>欢迎来到我的qq空间</h3>
-          <el-form-item>
+          <el-form-item prop="username">
             <el-input :prefix-icon="User" v-model="loginForm.username"></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input type="password" :prefix-icon="Lock" show-Password="true" v-model="loginForm.password"></el-input>
           </el-form-item>
           <el-form-item>
@@ -23,11 +23,11 @@
 
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue'
-import { reactive,ref } from 'vue'
+import { reactive, ref } from 'vue'
 import useUserStore from '@/store/modules/user'
 import { ElNotification } from 'element-plus';
 import { useRouter } from 'vue-router';
-import {getTime} from '@/utils/time'
+import { getTime } from '@/utils/time'
 
 let useStore = useUserStore();
 let $router = useRouter()
@@ -36,25 +36,47 @@ let loginForm = reactive({
   username: 'admin',
   password: '111111'
 })
+const validatorUserName = (rule: any, value: any, callback: any) => {
+  if (value.length > 6) {
+    callback()
+  } else {
+    callback(new Error('用户名长度至少6位！'))
+  }
+}
+const validatorPassword = (rule: any, value: any, callback: any) => {
+  if (value.length > 6) {
+    callback()
+  } else {
+    callback(new Error('密码长度至少5位！'))
+  }
+}
 const login = async () => {
-  loading.value=true
+  loading.value = true
   try {
     await useStore.userLogin(loginForm)
     $router.push('/')
     ElNotification({
       type: "success",
       message: '登录成功！',
-      title:`hi!${getTime()}好`
+      title: `hi!${getTime()}好`
     })
     loading.value = false
 
   } catch (error) {
     ElNotification({
-      type:'error',
-      message:(error as Error).message
+      type: 'error',
+      message: (error as Error).message
     })
     loading.value = false
   }
+}
+const rules = {
+  username: [
+    { trigger: 'change', require: true, validator: validatorUserName }
+  ],
+  password: [
+    { trigger: 'change', require: true, validator: validatorPassword }
+  ]
 }
 </script>
 
