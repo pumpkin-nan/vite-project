@@ -27,6 +27,8 @@ import { reactive,ref } from 'vue'
 import useUserStore from '@/store/modules/user'
 import { ElNotification } from 'element-plus';
 import { useRouter } from 'vue-router';
+import {getTime} from '@/utils/time'
+
 let useStore = useUserStore();
 let $router = useRouter()
 let loading = ref(false)
@@ -41,7 +43,8 @@ const login = async () => {
     $router.push('/')
     ElNotification({
       type: "success",
-      message: '登录成功！'
+      message: '登录成功！',
+      title:`hi!${getTime()}好`
     })
     loading.value = false
 
