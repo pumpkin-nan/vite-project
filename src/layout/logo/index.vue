@@ -5,27 +5,33 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { } from "vue"
 import setting from '@/setting'
 </script>
-
+<script lang="ts">
+export default {
+    name: 'Logo'
+}
+</script>
 <style lang="scss" scoped>
 .logo {
     width: 100%;
     height: $base-menu-logo-height;
     display: flex;
-    justify-content: center;
+
     align-items: center;
     color: white;
+    padding: 5px;
 
     img {
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
+        border-radius: 20px;
     }
 
     p {
-        margin-left: 10px;
+        margin-left: 22px;
         font-size: $base-menu-logo-title-fontSize;
     }
 }
