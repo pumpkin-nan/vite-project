@@ -1,14 +1,29 @@
 <template>
     <router-view v-slot="{ Component }">
         <transition name="fade">
-            <component :is="Component" />
+            <component :is="Component" v-if="flag" />
         </transition>
     </router-view>
 </template>
 
-<script setup>
-</script>
+<script setup lang="ts">
+import { watch, ref, nextTick } from 'vue'
+import useLayOutSettingStore from '@/store/modules/setting'
+let layOutSettingStore = useLayOutSettingStore()
+let flag = ref(false)
+watch(() => layOutSettingStore.refresh, () => {
+    flag.value = false
+    nextTick(() => {
+        flag.value = true
+    })
 
+})
+</script>
+<script  lang="ts">
+export default {
+    name: 'main'
+}
+</script>
 <style lang="scss" scoped>
 .fade-enter-from {
     opacity: 0;

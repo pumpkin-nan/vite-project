@@ -7,15 +7,22 @@
             </el-icon>
             <!-- 面包屑 -->
             <el-breadcrumb separator-icon="ArrowRight">
-                <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-                <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+                <el-breadcrumb-item v-for="(item, index) in $route.matched" :key="index" v-show="item.meta.title"
+                    :to="item.path">
+                    <!-- 面包屑展示的图标 -->
+                    <el-icon>
+                        <component :is="item.meta.icon"></component>
+                    </el-icon>
+                    <!-- 面包屑展示的标题 -->
+                    <span class="tabber_left_span">{{ item.meta.title }}</span>
+                </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <!-- 顶部右侧个人中心 -->
         <div class="tabber_right">
-            <el-button :icon="Refresh" circle size="small"></el-button>
-            <el-button :icon="FullScreen" circle size="small"></el-button>
-            <el-button :icon="Setting" circle size="small"></el-button>
+            <el-button icon="Refresh" circle size="small" @click="refresh"></el-button>
+            <el-button icon="FullScreen" circle size="small"></el-button>
+            <el-button icon="Setting" circle size="small"></el-button>
             <img src="../../assets/images/cat.jpg" style="width: 24px;height: 24px;margin:0 10px;">
             <!-- 下拉菜单 -->
             <el-dropdown>
@@ -37,7 +44,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import { useRoute } from 'vue-router'
 import useLayOutSettingStore from '@/store/modules/setting'
+
+// 刷新按钮的回调
+const refresh = () => {
+    layOutSettingStore.refresh = !layOutSettingStore.refresh
+}
+
+let $route = useRoute()
 // 用于控制菜单折叠与打开
 let layOutSettingStore = useLayOutSettingStore()
 const changeIcon = () => {
@@ -62,6 +77,11 @@ export default {
         display: flex;
         align-items: center;
         margin-left: 20px;
+
+        .tabber_left_span {
+            margin: 0 5px;
+
+        }
 
     }
 
