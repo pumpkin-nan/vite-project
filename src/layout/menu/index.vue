@@ -40,11 +40,13 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { } from "vue"
 defineProps(['menuList'])
+const $router = useRouter()
 // 引入菜单组件
 const goRoute = (local: any) => {
-    console.log(local)
+    $router.push(local.index)
 }
 </script>
 <script lang="ts">

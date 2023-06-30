@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <h1>数据大屏</h1>
+        <h1>attr</h1>
     </div>
 </template>
 

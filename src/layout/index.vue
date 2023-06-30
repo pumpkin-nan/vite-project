@@ -15,7 +15,7 @@
         <div class="layout_tabbar">456</div>
         <!-- 内容展示区 -->
         <div class="layout_main">
-            <p style="height: 10000px;background:blue">2222222</p>
+            <Main></Main>
         </div>
     </div>
 </template>
@@ -23,7 +23,9 @@
 <script setup>
 import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
+import Main from './main/index.vue'
 import useUserStore from '@/store/modules/user'
+
 let userStore = useUserStore()
 </script>
 

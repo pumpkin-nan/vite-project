@@ -1,5 +1,7 @@
 <template>
-    <div class=""></div>
+    <div class="">
+        <h1>sku</h1>
+    </div>
 </template>
 
 <script setup>
