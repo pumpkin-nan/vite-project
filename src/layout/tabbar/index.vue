@@ -21,7 +21,7 @@
         <!-- 顶部右侧个人中心 -->
         <div class="tabber_right">
             <el-button icon="Refresh" circle size="small" @click="refresh"></el-button>
-            <el-button icon="FullScreen" circle size="small"></el-button>
+            <el-button icon="FullScreen" circle size="small" @click="fullScreen"></el-button>
             <el-button icon="Setting" circle size="small"></el-button>
             <img src="../../assets/images/cat.jpg" style="width: 24px;height: 24px;margin:0 10px;">
             <!-- 下拉菜单 -->
@@ -47,16 +47,27 @@ import { ref } from "vue"
 import { useRoute } from 'vue-router'
 import useLayOutSettingStore from '@/store/modules/setting'
 
-// 刷新按钮的回调
-const refresh = () => {
-    layOutSettingStore.refresh = !layOutSettingStore.refresh
-}
 
 let $route = useRoute()
 // 用于控制菜单折叠与打开
 let layOutSettingStore = useLayOutSettingStore()
 const changeIcon = () => {
     layOutSettingStore.fold = !layOutSettingStore.fold
+}
+
+// 刷新按钮的回调
+const refresh = () => {
+    layOutSettingStore.refresh = !layOutSettingStore.refresh
+}
+
+// 全屏按钮
+const fullScreen = () => {
+    let full = document.fullscreenElement
+    if (!full) {
+        document.documentElement.requestFullscreen()
+    } else {
+        document.exitFullscreen()
+    }
 }
 </script>
 <script lang="ts">
