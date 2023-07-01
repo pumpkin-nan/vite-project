@@ -55,6 +55,7 @@ export default {
         background: $base-menu-background;
         color: white;
         transition: all 0.3s;
+        white-space: nowrap;
 
         .sliderbar {
             width: 100%;
