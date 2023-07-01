@@ -34,7 +34,7 @@
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>退出登录</el-dropdown-item>
+                        <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -44,11 +44,13 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import useLayOutSettingStore from '@/store/modules/setting'
 import useUserStore from '@/store/modules/user'
 
 let $route = useRoute()
+let userStore = useUserStore()
+let $router = useRouter()
 // 用于控制菜单折叠与打开
 let layOutSettingStore = useLayOutSettingStore()
 const changeIcon = () => {
@@ -70,7 +72,12 @@ const fullScreen = () => {
     }
 }
 
-let userStore = useUserStore()
+
+// 退出登录
+let logout = () => {
+    userStore.userlogout()
+    $router.push({ path: '/login', query: { redirect: $route.path } })
+}
 </script>
 <script lang="ts">
 export default {
