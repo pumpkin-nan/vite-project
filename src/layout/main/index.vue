@@ -10,7 +10,7 @@
 import { watch, ref, nextTick } from 'vue'
 import useLayOutSettingStore from '@/store/modules/setting'
 let layOutSettingStore = useLayOutSettingStore()
-let flag = ref(false)
+let flag = ref(true)
 watch(() => layOutSettingStore.refresh, () => {
     flag.value = false
     nextTick(() => {

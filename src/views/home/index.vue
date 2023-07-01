@@ -1,13 +1,17 @@
 <template>
   <div class="">
-    <h1>展示登录成功以后得路由</h1>
+    <h1>{{ userStore.username }}</h1>
+    <img :src="userStore.avatar">
   </div>
 </template>
 
-<script setup>
-
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import useUserStore from '@/store/modules/user'
+let userStore = useUserStore()
+onMounted(() => {
+  userStore.userInfo()
+})
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

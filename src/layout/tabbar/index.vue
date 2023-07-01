@@ -23,11 +23,11 @@
             <el-button icon="Refresh" circle size="small" @click="refresh"></el-button>
             <el-button icon="FullScreen" circle size="small" @click="fullScreen"></el-button>
             <el-button icon="Setting" circle size="small"></el-button>
-            <img src="../../assets/images/cat.jpg" style="width: 24px;height: 24px;margin:0 10px;">
+            <img :src="userStore.avatar" style="width: 24px;height: 24px;margin:0 10px;border-radius:50%">
             <!-- 下拉菜单 -->
             <el-dropdown>
                 <span class="el-dropdown-link">
-                    admin
+                    {{ userStore.username }}
                     <el-icon class="el-icon--right">
                         <arrow-down />
                     </el-icon>
@@ -46,7 +46,7 @@
 import { ref } from "vue"
 import { useRoute } from 'vue-router'
 import useLayOutSettingStore from '@/store/modules/setting'
-
+import useUserStore from '@/store/modules/user'
 
 let $route = useRoute()
 // 用于控制菜单折叠与打开
@@ -69,6 +69,8 @@ const fullScreen = () => {
         document.exitFullscreen()
     }
 }
+
+let userStore = useUserStore()
 </script>
 <script lang="ts">
 export default {
