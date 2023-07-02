@@ -5,10 +5,8 @@ export interface ResponseData {
 }
 export interface Trademark {
     id?: number,
-    createTime: string,
-    updateTime: string,
     tmName: string,
-    logUrl: string
+    logoUrl: string
 }
 
 export type Records = Trademark[]
