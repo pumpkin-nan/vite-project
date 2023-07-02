@@ -90,11 +90,10 @@ export default {
         position: fixed;
         width: calc(100% - $base-menu-width);
         height: calc(100vh - $base-topbar-height);
-        background: skyblue;
         top: $base-topbar-height;
         left: $base-menu-width;
         padding: 20px;
-        overflow: scroll;
+        overflow: auto;
         transition: all 0.3s;
 
         &.fold {

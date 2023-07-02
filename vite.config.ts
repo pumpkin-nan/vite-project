@@ -33,8 +33,20 @@ export default defineConfig(({ command, mode }) => {
     // 代理跨域
     server: {
       proxy: {
-        [env.VITE_APP_BASE_API]: {
+        // [env.VITE_APP_BASE_API]: {
+        //   target: "http://139.198.104.58:8212",
+        //   changeOrigin: true,
+        //   // 路径重写
+        //   rewrite: (path) => path.replace(/^\/api/, '')
+        // },
+        '^/api/admin/acl/.*': {
           target: "http://139.198.104.58:8212",
+          changeOrigin: true,
+          // 路径重写
+          rewrite: (path) => path.replace(/^\/api/, '')
+        },
+        '^/api/admin/product/.*': {
+          target: "http://139.198.104.58:8209",
           changeOrigin: true,
           // 路径重写
           rewrite: (path) => path.replace(/^\/api/, '')
