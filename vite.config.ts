@@ -37,7 +37,7 @@ export default defineConfig(({ command, mode }) => {
           target: "http://139.198.104.58:8212",
           changeOrigin: true,
           // 路径重写
-          rewrite: (path) => path.replace(/^\/api/, ''),
+          rewrite: (path) => path.replace(/^\/api/, '')
         }
       }
     }

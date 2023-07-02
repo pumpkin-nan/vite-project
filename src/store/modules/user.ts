@@ -3,6 +3,7 @@ import { reqLogin, reqLogout, reqUserInfo } from '@/api/user'
 import type { userState } from './types/types'
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 import { constantRoute } from '@/router/routers'
+import type { loginFormData, loginResponseData, userInfoData } from '@/api/user/type'
 
 let useUserStore = defineStore('User', {
     state: (): userState => {
@@ -15,8 +16,8 @@ let useUserStore = defineStore('User', {
     },
     actions: {
         // 用户登录的方法
-        async userLogin(data: any) {
-            let result: any = await reqLogin(data)
+        async userLogin(data: loginFormData) {
+            let result: loginResponseData = await reqLogin(data)
             if (result.code == 200) {
                 this.token = (result.data as string)
                 SET_TOKEN((result.data as string))
@@ -27,7 +28,7 @@ let useUserStore = defineStore('User', {
         },
         // 获取用户信息的方法
         async userInfo() {
-            let result: any = await reqUserInfo();
+            let result: userInfoData = await reqUserInfo();
             if (result.code == 200) {
                 this.username = result.data.name
                 this.avatar = result.data.avatar
