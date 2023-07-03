@@ -10,6 +10,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'virtual:svg-icons-register'
 import globalComponent from './components/index';
 import '@/styles/index.scss'
+import '@/styles/base.css'
 
 import router from './router'
 import pinia from './store'
