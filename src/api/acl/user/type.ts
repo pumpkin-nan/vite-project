@@ -36,9 +36,14 @@ export interface userRoles {
 
 export type AllRole = userRoles[]
 
-export interface RoleResponseData extends ResponseData {
+export interface RoleResponseData extends RoleResponseData {
     data: {
         assignRoles: AllRole,
         allRolesList: AllRole
     }
+}
+
+export interface SetRoleData {
+    roleIdList: number[],
+    userId: number
 }

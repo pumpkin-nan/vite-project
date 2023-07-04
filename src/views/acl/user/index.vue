@@ -82,16 +82,16 @@
             </el-form>
         </template>
         <template #footer>
-            <el-button>取消</el-button>
-            <el-button type="primary">确定</el-button>
+            <el-button @click="visible = false">取消</el-button>
+            <el-button type="primary" @click="confirmClick">确定</el-button>
         </template>
     </el-drawer>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, reactive, nextTick } from "vue"
-import { reqUserInfo, reqAddOrEditUser, reqAllRole } from "@/api/acl/user/index"
-import type { UserResponseData, Records, User, RoleResponseData, AllRole } from "@/api/user/type"
+import { reqUserInfo, reqAddOrEditUser, reqAllRole, reqAssignRole } from "@/api/acl/user/index"
+import type { UserResponseData, Records, User, RoleResponseData, AllRole, SetRoleData } from "@/api/user/type"
 import { ElMessage } from "element-plus"
 
 let pageNo = ref<number>(1)
@@ -216,7 +216,6 @@ const setRole = async (row: User) => {
     visible.value = true
     Object.assign(userParams, row)
     let result: RoleResponseData = await reqAllRole(userParams.id as number)
-    console.log(result)
     if (result.code == 200) {
         userRole.value = result.data.assignRoles
         allRole.value = result.data.allRolesList
@@ -232,6 +231,21 @@ const handleCheckedCitiesChange = (value: string[]) => {
     const checkedCount = value.length
     checkAll.value = checkedCount === allRole.value.length
     isIndeterminate.value = checkedCount > 0 && checkedCount < allRole.value.length
+}
+// 分配角色确认
+const confirmClick = async () => {
+    let data: SetRoleData = {
+        userId: userParams.id,
+        roleIdList: userRole.value.map(item => { return item.id })
+    }
+    let result: any = await reqAssignRole(data)
+    if (result.code == 200) {
+        ElMessage({ type: 'success', message: '分配角色成功' })
+        visible.value = false
+        getHasUser(pageNo.value)
+    } else {
+        ElMessage({ type: 'error', message: '分配角色失败' })
+    }
 }
 </script>
 
