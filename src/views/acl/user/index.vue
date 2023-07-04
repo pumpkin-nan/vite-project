@@ -3,20 +3,21 @@
     <el-card>
         <el-form class="user">
             <el-form-item label="用户名:">
-                <el-input placeholder="请输入用户名"></el-input>
+                <el-input placeholder="请输入用户名" v-model="keyword"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" size="default">搜索</el-button>
-                <el-button size="default">重置</el-button>
+                <el-button type="primary" size="default" :disabled="!keyword" @click="search">搜索</el-button>
+                <el-button size="default" @click="reset">重置</el-button>
             </el-form-item>
         </el-form>
     </el-card>
     <!-- 用户信息 -->
     <el-card style="margin:10px 0;">
         <el-button type="primary" size="default" @click="addUser">添加</el-button>
-        <el-button type="danger" size="default">批量删除</el-button>
+        <el-button type="danger" size="default" :disabled="!selectIdArr.length" @click="deleteSelectUser">批量删除</el-button>
         <!-- table展示用户信息 -->
-        <el-table style="margin: 10px 0;font-size:8px" border :data="userArr" show-overflow-tooltip>
+        <el-table style="margin: 10px 0;font-size:8px" border :data="userArr" show-overflow-tooltip
+            @selection-change="selectChange">
             <el-table-column type="selection" align="center" width="50px"></el-table-column>
             <el-table-column label="#" align="center" type="index"></el-table-column>
             <el-table-column label="id" align="center" prop="id" width="80px"></el-table-column>
@@ -29,7 +30,11 @@
                 <template #="{ row, $index }">
                     <el-button type="primary" size="small" icon="user" @click="setRole(row)">分配角色</el-button>
                     <el-button type="primary" size="small" icon="edit" @click="editUser(row)">编辑</el-button>
-                    <el-button type="danger" size="small" icon="delete">删除</el-button>
+                    <el-popconfirm :title="`是否确认删除${row.username}?`" width="260px" @confirm="confirmEvent(row.id)">
+                        <template #reference>
+                            <el-button type="danger" size="small" icon="delete">删除</el-button>
+                        </template>
+                    </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
@@ -90,9 +95,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive, nextTick } from "vue"
-import { reqUserInfo, reqAddOrEditUser, reqAllRole, reqAssignRole } from "@/api/acl/user/index"
+import { reqUserInfo, reqAddOrEditUser, reqAllRole, reqAssignRole, reqRemoveUser, reqAllRemoveUser } from "@/api/acl/user/index"
 import type { UserResponseData, Records, User, RoleResponseData, AllRole, SetRoleData } from "@/api/user/type"
 import { ElMessage } from "element-plus"
+import useLayOutSettingStore from '@/store/modules/setting'
 
 let pageNo = ref<number>(1)
 let pageSize = ref<number>(5)
@@ -110,6 +116,9 @@ let checkAll = ref<boolean>(false)
 let isIndeterminate = ref<boolean>(true)
 let allRole = ref<AllRole>([])
 let userRole = ref<AllRole>([])
+let selectIdArr = ref<User[]>([])
+let keyword = ref<string>('')
+let settingStore = useLayOutSettingStore()
 onMounted(() => {
     getHasUser()
 })
@@ -117,7 +126,7 @@ onMounted(() => {
 const getHasUser = async (pager = 1) => {
     // 收集当前页码
     pageNo.value = pager;
-    let result: UserResponseData = await reqUserInfo(pageNo.value, pageSize.value)
+    let result: UserResponseData = await reqUserInfo(pageNo.value, pageSize.value, keyword.value)
     if (result.code == 200) {
         total.value = result.data.total
         userArr.value = result.data.records
@@ -127,7 +136,14 @@ const getHasUser = async (pager = 1) => {
 const handleSizeChange = () => {
     getHasUser()
 }
-
+// 搜索按钮
+const search = () => {
+    getHasUser()
+}
+// 重置按钮
+const reset = () => {
+    settingStore.refresh = !settingStore.refresh
+}
 // 添加用户信息
 const addUser = () => {
 
@@ -245,6 +261,32 @@ const confirmClick = async () => {
         getHasUser(pageNo.value)
     } else {
         ElMessage({ type: 'error', message: '分配角色失败' })
+    }
+}
+// 删除单个用户
+const confirmEvent = async (id: number) => {
+    let result: any = await reqRemoveUser(id)
+    if (result.code == 200) {
+        ElMessage({ type: 'success', message: '删除成功' })
+        getHasUser(userArr.value.length > 1 ? pageNo.value : 1)
+    } else {
+        ElMessage({ type: 'error', message: '删除失败' })
+    }
+}
+const selectChange = (value: any) => {
+    selectIdArr.value = value
+}
+// 删除批量用户
+const deleteSelectUser = async () => {
+    let idList: any = selectIdArr.value.map(item => {
+        return item.id
+    })
+    let result: any = await reqAllRemoveUser(idList)
+    if (result.code == 200) {
+        ElMessage({ type: 'success', message: '删除成功' })
+        getHasUser(userArr.value.length > 1 ? pageNo.value : 1)
+    } else {
+        ElMessage({ type: 'error', message: '删除失败' })
     }
 }
 </script>
