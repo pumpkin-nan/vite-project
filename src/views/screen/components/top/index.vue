@@ -56,6 +56,7 @@ onBeforeUnmount(() => {
             text-align: center;
             line-height: 40px;
             font-size: 20px;
+            cursor: pointer
         }
     }
 
