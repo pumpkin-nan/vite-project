@@ -10,11 +10,12 @@ import useUserStore from '@/store/modules/user'
 import setting from './setting';
 
 let userStore = useUserStore(pinia)
-let username = userStore.username
+
 router.beforeEach(async (to: any, from: any, next: any) => {
     document.title = `${setting.title}-${to.meta.title}`
     nprogress.start();
     let token = userStore.token
+    let username = userStore.username
     if (token) {
         if (to.path == '/login') {
             next({ path: '/' })
@@ -26,7 +27,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
                     await userStore.userInfo()
                     //等待异步路由加载完毕
                     // next({ ...to, replace: true })
-                    next()
+                    next({ ...to })
                 } catch (error) {
                     //TOKEN 过期
                     // token 被修改
