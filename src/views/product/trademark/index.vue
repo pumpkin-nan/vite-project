@@ -14,11 +14,12 @@
             </el-table-column>
             <el-table-column prop="address" label="品牌操作">
                 <template #="{ row, $index }">
-                    <el-button type="warning" icon="Edit" size="small" @click="$event => updateTrademark(row)"></el-button>
+                    <el-button type="warning" icon="Edit" size="small" @click="$event => updateTrademark(row)"
+                        v-has="`btn.Trademark.update`"></el-button>
                     <el-popconfirm :title="`您是否要删除${row.tmName}吗？`" width="200px" icon="Delete"
                         @confirm="removeTrademark(row.id)">
                         <template #reference>
-                            <el-button type="danger" icon="Delete" size="small"></el-button>
+                            <el-button type="danger" icon="Delete" size="small" v-has="`btn.Trademark.remove`"></el-button>
                         </template>
                     </el-popconfirm>
                 </template>
