@@ -25,8 +25,8 @@ router.beforeEach(async (to: any, from: any, next: any) => {
                 try {
                     await userStore.userInfo()
                     //等待异步路由加载完毕
-                    next({ ...to, replace: true })
-                    // next()
+                    // next({ ...to, replace: true })
+                    next()
                 } catch (error) {
                     //TOKEN 过期
                     // token 被修改
