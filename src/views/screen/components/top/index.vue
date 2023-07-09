@@ -13,7 +13,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import moment from 'moment'
 import { ref, onMounted, onBeforeUnmount } from "vue"
 import { useRouter } from "vue-router";

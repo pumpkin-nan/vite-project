@@ -84,7 +84,6 @@ onMounted(() => {
     background-size: 100% 100%;
 
     .ratio {
-        margin-left: 20px;
 
         p {
             color: white;

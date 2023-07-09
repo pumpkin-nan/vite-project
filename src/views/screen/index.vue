@@ -12,10 +12,13 @@
                     <Age class="age"></Age>
                 </div>
                 <div class="center">
-                    center
+                    <Map class="map"></Map>
+                    <Line class="line"></Line>
                 </div>
                 <div class="right">
-                    right
+                    <Rank class="rank"></Rank>
+                    <Year class="year"></Year>
+                    <Couter class="couter"></Couter>
                 </div>
             </div>
         </div>
@@ -28,6 +31,11 @@ import Top from './components/top/index.vue'
 import Tourist from './components/tourist/index.vue'
 import Sex from './components/sex/index.vue'
 import Age from './components/age/index.vue'
+import Map from './components/map/index.vue'
+import Line from './components/line/index.vue'
+import Couter from './components/couter/index.vue'
+import Year from './components/year/index.vue'
+import Rank from './components/rank/index.vue'
 
 
 let screen = ref()
@@ -85,10 +93,12 @@ window.onresize = () => {
 
             .tourist {
                 flex: 1.2;
+                margin-top: 10px;
             }
 
             .sex {
                 flex: 1;
+                margin: 10px 0;
             }
 
             .age {
@@ -98,11 +108,42 @@ window.onresize = () => {
         }
 
         .right {
-            flex: 1
+            flex: 1;
+            height: 1040px;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+
+            .rank {
+                flex: 1.2;
+                margin-top: 10px;
+            }
+
+            .couter {
+                flex: 1;
+            }
+
+            .year {
+                flex: 1;
+                margin: 10px 0;
+
+            }
         }
 
         .center {
             flex: 2;
+            display: flex;
+            flex-direction: column;
+            margin: 0px 10px;
+
+            .map {
+                flex: 3;
+            }
+
+            .line {
+                flex: 1;
+                margin: 0px 10px;
+            }
         }
     }
 }

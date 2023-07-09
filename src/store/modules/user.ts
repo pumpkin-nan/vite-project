@@ -60,7 +60,6 @@ let useUserStore = defineStore('User', {
                 [...userAsyncRoute, anyRoute].forEach((route: any) => {
                     router.addRoute(route);
                 });
-
                 return 'ok'
             } else {
                 return Promise.reject(new Error(result.message))

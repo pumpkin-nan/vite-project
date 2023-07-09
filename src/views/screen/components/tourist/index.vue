@@ -58,13 +58,8 @@ onMounted(() => {
 .tourist {
     background: url(../../images/dataScreen-main-lb.png) no-repeat;
     background-size: 100% 100%;
-    margin-top: 10px;
-
 
     .top {
-        margin-left: 20px;
-        margin-top: 50x;
-
         .title {
             color: white;
             font-size: 20px;
@@ -92,7 +87,7 @@ onMounted(() => {
     }
 
     .number {
-        margin-top: 60px;
+        margin-top: 30px;
         display: flex;
         padding: 10px;
 
@@ -112,7 +107,7 @@ onMounted(() => {
 
     .chars {
         width: 100%;
-        height: 280px;
+        height: 200px;
     }
 }
 </style>

@@ -87,11 +87,6 @@ onMounted(() => {
         .ratio {
             color: white;
             font-size: 20px;
-            margin-left: 20px;
-        }
-
-        img {
-            margin: 10px 20px;
         }
     }
 
