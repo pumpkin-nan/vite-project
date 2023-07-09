@@ -14,9 +14,9 @@
 </template>
 
 <script setup>
+import moment from 'moment'
 import { ref, onMounted, onBeforeUnmount } from "vue"
 import { useRouter } from "vue-router";
-import moment from 'moment'
 
 let $router = useRouter()
 let time = ref(moment().format('YYYY年MM月DD日 hh:mm:ss'))

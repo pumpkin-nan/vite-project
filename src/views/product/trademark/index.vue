@@ -1,7 +1,8 @@
 <template>
     <el-card class="box-card">
         <!-- 品牌按钮 -->
-        <el-button type="primary" size="default" icon="plus" @click="addTrademark">添加品牌</el-button>
+        <el-button type="primary" size="default" icon="plus" @click="addTrademark"
+            v-has="`btn.Trademark.add`">添加品牌</el-button>
         <!-- 表格 -->
         <el-table class="trademark_table" :data="trademarkArr" border style="width: 100%">
             <el-table-column type="index" label="序号" width="80" align="center" />
@@ -63,6 +64,7 @@ import { reqHasTrademark, reqAddOrUpdateTrademark, reqDeleteTrademark } from '@/
 import type { Records, Trademark, TrademarkResponseData } from '@/api/product/trademark/type'
 import type { UploadProps } from 'element-plus'
 import { ElMessage } from 'element-plus'
+
 
 let pageNo = ref<number>(1)
 let limit = ref<number>(3)

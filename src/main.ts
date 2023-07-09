@@ -15,6 +15,7 @@ import '@/styles/base.css'
 import router from './router'
 import pinia from './store'
 import './permission'
+import { isHasButton } from "./directive/has";
 
 const app = createApp(App)
 app.use(ElementPlus, {
@@ -23,6 +24,7 @@ app.use(ElementPlus, {
 app.use(pinia)
 app.use(router)
 app.use(globalComponent)
+isHasButton(app)
 
 app.mount('#app')
 
