@@ -29,16 +29,13 @@ let useCategoryStore = defineStore('category', {
         },
         async getCategory3() {
             let result: CategoryResponse = await reqC3(this.c2Id)
-            console.log(result)
             if (result.code == 200) {
                 this.c3Arr = result.data
             }
         },
 
-    },
-    getter: {
-
     }
+
 })
 
 export default useCategoryStore
