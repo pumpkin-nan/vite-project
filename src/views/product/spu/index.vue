@@ -2,22 +2,28 @@
     <div>
         <Category :scene="scene"></Category>
         <el-card style="margin: 10px 0;">
-            <el-button type="primary" icon="Plus" :disabled="categoryStore.c3Id ? false : true">添加SPU</el-button>
-            <el-table border style="margin: 10px 0;" :data="records">
-                <el-table-column label="序号" type="index" width="80px" align="center"></el-table-column>
-                <el-table-column label="SPU名称" prop="spuName" show-overflow-tooltip="true"></el-table-column>
-                <el-table-column label="SPU描述" prop="description" show-overflow-tooltip="true"></el-table-column>
-                <el-table-column label="操作">
-                    <template #="{ row, $index }">
-                        <el-button type="primary" icon="Plus" size="small"></el-button>
-                        <el-button type="warning" icon="Edit" size="small"></el-button>
-                        <el-button type="info" icon="InfoFilled" size="small"></el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-pagination v-model:current-page="pageNo" v-model:page-size="pageSize" :page-sizes="[3, 5, 7, 9]"
-                :background="true" layout=" prev, pager, next, jumper,->,sizes,total" :total="total"
-                @size-change="handleSizeChange" @current-change="getSpuInfo" />
+            <div v-show="scene == 0">
+                <el-button type="primary" icon="Plus" :disabled="categoryStore.c3Id ? false : true"
+                    @click="addSpu">添加SPU</el-button>
+                <el-table border style="margin: 10px 0;" :data="records">
+                    <el-table-column label="序号" type="index" width="80px" align="center"></el-table-column>
+                    <el-table-column label="SPU名称" prop="spuName" show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column label="SPU描述" prop="description" show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column label="操作">
+                        <template #="{ row, $index }">
+                            <el-button type="primary" icon="Plus" size="small"></el-button>
+                            <el-button type="warning" icon="Edit" size="small" @click="editSpu(row)"></el-button>
+                            <el-button type="info" icon="InfoFilled" size="small"></el-button>
+                            <el-button type="danger" icon="delete" size="small"></el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination v-model:current-page="pageNo" v-model:page-size="pageSize" :page-sizes="[3, 5, 7, 9]"
+                    :background="true" layout=" prev, pager, next, jumper,->,sizes,total" :total="total"
+                    @size-change="handleSizeChange" @current-change="getSpuInfo" />
+            </div>
+            <SpuForm v-show="scene == 1" @changeScene="changeScene" ref="spu"></SpuForm>
+            <SkuForm v-show="scene == 2"></SkuForm>
         </el-card>
     </div>
 </template>
@@ -28,6 +34,9 @@ import { reqSpuInfo } from '@/api/product/spu'
 import type { SpuData, SpuInfoResponseData } from '@/api/product/spu/type'
 import useCategoryStore from '@/store/modules/category'
 import Category from '@/components/Category/index.vue'
+import SkuForm from './skuForm.vue'
+import SpuForm from './spuForm.vue'
+
 
 let categoryStore = useCategoryStore()
 let scene = ref<number>(0)
@@ -35,6 +44,7 @@ let pageNo = ref<number>(1)
 let pageSize = ref<number>(3)
 let total = ref<number>(0)
 let records = ref<SpuData[]>([])
+let spu = ref<any>()
 
 watch(() => categoryStore.c3Id, () => {
     if (!categoryStore.c3Id) return;
@@ -54,8 +64,23 @@ const getSpuInfo = async () => {
         total.value = result.data.total
     }
 }
+// 分页切换每页显示条数
 const handleSizeChange = () => {
     getSpuInfo()
+}
+
+// 添加SPU
+const addSpu = () => {
+    scene.value = 1
+}
+// 修改SPU
+const editSpu = (row: SpuData) => {
+    scene.value = 1
+    spu.value.initHasSpuData(row)
+}
+
+const changeScene = (num: number) => {
+    scene.value = num
 }
 </script>
 
