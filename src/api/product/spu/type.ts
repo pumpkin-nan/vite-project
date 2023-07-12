@@ -5,7 +5,7 @@ export interface ResponseData {
 }
 
 export interface SpuData {
-    id?: number,
+    id?: number | string,
     spuName: string,
     description: string,
     category3Id: number | string,
@@ -56,21 +56,24 @@ export interface SaleAttrValue {
     createTime?: null,
     updateTime?: null,
     spuId?: number,
-    baseSaleAttrId: number,
-    saleAttrValueName: string,
-    saleAttrName?: string,
+    baseSaleAttrId: number | string,
+    saleAttrName: string,
+    saleAttrValueName?: string | number,
     isChecked?: null
 }
 export type SpuSaleAttrList = SaleAttrValue[]
 export interface SaleAttr {
 
-    baseSaleAttrId: number,
+    baseSaleAttrId: number | string,
     saleAttrName: string,
     spuSaleAttrValueList: SpuSaleAttrList,
     id?: number,
     createTime?: null,
     updateTime?: null,
     spuId?: number,
+    flag?: boolean,
+    saleAttrValue?: string
+
 }
 
 export interface SaleAttrResponseData extends ResponseData {
