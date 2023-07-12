@@ -11,7 +11,7 @@
                     <el-table-column label="SPU描述" prop="description" show-overflow-tooltip="true"></el-table-column>
                     <el-table-column label="操作">
                         <template #="{ row, $index }">
-                            <el-button type="primary" icon="Plus" size="small" @click="addSku"></el-button>
+                            <el-button type="primary" icon="Plus" size="small" @click="addSku(row)"></el-button>
                             <el-button type="warning" icon="Edit" size="small" @click="editSpu(row)"></el-button>
                             <el-button type="info" icon="InfoFilled" size="small"></el-button>
                             <el-button type="danger" icon="delete" size="small"></el-button>
@@ -23,7 +23,7 @@
                     @size-change="handleSizeChange" @current-change="getSpuInfo" />
             </div>
             <SpuForm v-show="scene == 1" @changeScene="changeScene" ref="spu"></SpuForm>
-            <SkuForm v-show="scene == 2" @changeScene="changeScene"></SkuForm>
+            <SkuForm v-show="scene == 2" @changeScene="changeScene" ref="sku"></SkuForm>
         </el-card>
     </div>
 </template>
@@ -36,8 +36,6 @@ import useCategoryStore from '@/store/modules/category'
 import Category from '@/components/Category/index.vue'
 import SkuForm from './skuForm.vue'
 import SpuForm from './spuForm.vue'
-import { ElStep } from "element-plus/es/components/index.js"
-
 
 let categoryStore = useCategoryStore()
 let scene = ref<number>(2)
@@ -46,6 +44,7 @@ let pageSize = ref<number>(3)
 let total = ref<number>(0)
 let records = ref<SpuData[]>([])
 let spu = ref<any>()
+let sku = ref<any>()
 
 watch(() => categoryStore.c3Id, () => {
     if (!categoryStore.c3Id) return;
@@ -92,8 +91,9 @@ const changeScene = (obj: any) => {
 }
 
 // 添加sku
-const addSku = () => {
+const addSku = (row: SpuData) => {
     scene.value = 2
+    sku.value.initSkuData(categoryStore.c1Id, categoryStore.c2Id, row)
 }
 </script>
 

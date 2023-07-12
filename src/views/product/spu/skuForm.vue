@@ -14,71 +14,34 @@
         </el-form-item>
         <el-form-item label="平台属性">
             <el-form :inline="true">
-                <el-form-item label="手机">
+                <el-form-item :label="item.attrName" v-for="(item, index) in attrArr" :key="attrArr.id">
                     <el-select placeholder="请选择">
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="手机">
-                    <el-select placeholder="请选择">
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="手机">
-                    <el-select placeholder="请选择">
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
+                        <el-option :label="attrValue.valueName" v-for="(attrValue, index) in item.attrValueList"
+                            :key="attrValue.id"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
-            <el-form :inline="true">
-                <el-form-item label="手机">
-                    <el-select placeholder="请选择">
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="手机">
-                    <el-select placeholder="请选择">
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="手机">
-                    <el-select placeholder="请选择">
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                        <el-option label="2222"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
+
         </el-form-item>
         <el-form-item label="销售属性">
-            <el-select placeholder="请选择">
-                <el-option label="2222"></el-option>
-                <el-option label="2222"></el-option>
-                <el-option label="2222"></el-option>
-                <el-option label="2222"></el-option>
-            </el-select>
+            <el-form :inline="true">
+                <el-form-item :label="item.saleAttrName" v-for="(item, index) in saleArr" :key="item.id">
+                    <el-select placeholder="请选择">
+                        <el-option :label="sale.saleAttrValueName" v-for="(sale, index) in item.spuSaleAttrValueList"
+                            :key="sale.id"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
         </el-form-item>
         <el-form-item label="图片名称">
-            <el-table border style="margin-bottom: 10px;" :data="[1, 2, 3, 5]">
+            <el-table border style="margin-bottom: 10px;" :data="imgArr">
                 <el-table-column type="selection" width="80px" align="center"></el-table-column>
-                <el-table-column label="图片"></el-table-column>
-                <el-table-column label="名称"></el-table-column>
+                <el-table-column label="图片">
+                    <template #="{ row, $index }">
+                        <img :src="row.imgUrl" alt="" style="width: 100px; height:100px">
+                    </template>
+                </el-table-column>
+                <el-table-column label="名称" prop="imgName"></el-table-column>
                 <el-table-column label="操作">
                     <template #="{ row, $index }">
                         <el-button type="warning">设置默认</el-button>
@@ -91,15 +54,31 @@
     </el-form>
 </template>
 
-<script setup>
-import { } from "vue"
-
+<script setup lang="ts">
+import { ref } from "vue"
+import { reqAttrInfo } from '@/api/product/attr'
+import { reqImageList, reqSaleAttrList } from '@/api/product/spu'
 let $emit = defineEmits(['changeScene'])
+let attrArr = ref<any>([])
+let saleArr = ref<any>([])
+let imgArr = ref<any>([])
 
 const cancel = () => {
     $emit('changeScene', { flag: 0, params: '' })
 }
 
+let initSkuData = async (c1Id: number | string, c2Id: number | string, spu: any) => {
+    console.log(c1Id, c2Id, spu)
+    let result: any = await reqAttrInfo(c1Id, c2Id, spu.category3Id)
+    let result1: any = await reqSaleAttrList(spu.id)
+    let result2: any = await reqImageList(spu.id)
+
+    attrArr.value = result.data
+    saleArr.value = result1.data
+    imgArr.value = result2.data
+
+}
+defineExpose({ initSkuData })
 </script>
 
 <style lang="scss" scoped></style>
