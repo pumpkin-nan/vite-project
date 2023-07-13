@@ -120,8 +120,6 @@ const save = async () => {
     // }, [])
 
     skuParams.skuAttrValueList = attrArr
-
-
     let result: any = await reqAddSku(skuParams)
     if (result.code == 200) {
         ElMessage({
