@@ -13,7 +13,7 @@
                         <template #="{ row, $index }">
                             <el-button type="primary" icon="Plus" size="small" @click="addSku(row)"></el-button>
                             <el-button type="warning" icon="Edit" size="small" @click="editSpu(row)"></el-button>
-                            <el-button type="info" icon="InfoFilled" size="small"></el-button>
+                            <el-button type="info" icon="InfoFilled" size="small" @click="LookSku(row)"></el-button>
                             <el-button type="danger" icon="delete" size="small"></el-button>
                         </template>
                     </el-table-column>
@@ -24,14 +24,29 @@
             </div>
             <SpuForm v-show="scene == 1" @changeScene="changeScene" ref="spu"></SpuForm>
             <SkuForm v-show="scene == 2" @changeScene="changeScene" ref="sku"></SkuForm>
+            <!-- 查看对话框 -->
+            <el-dialog v-model="dialogVisible" title="SKU列表">
+                <template #footer>
+                    <el-table border :data="skuArr">
+                        <el-table-column label="SKU名称" prop="skuName"></el-table-column>
+                        <el-table-column label="SKU价格" prop="price"></el-table-column>
+                        <el-table-column label="SKU重量" prop="weight"></el-table-column>
+                        <el-table-column label="SKU图片">
+                            <template #="{ row, $index }">
+                                <img :src="row.skuDefaultImg" alt="" style="width: 100px; height:100px">
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </template>
+            </el-dialog>
         </el-card>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch, onBeforeUnmount } from "vue"
-import { reqSpuInfo } from '@/api/product/spu'
-import type { SpuData, SpuInfoResponseData } from '@/api/product/spu/type'
+import { reqSpuInfo, reqSkuList } from '@/api/product/spu'
+import type { SpuData, SpuInfoResponseData, SkuInfoData } from '@/api/product/spu/type'
 import useCategoryStore from '@/store/modules/category'
 import Category from '@/components/Category/index.vue'
 import SkuForm from './skuForm.vue'
@@ -45,6 +60,8 @@ let total = ref<number>(0)
 let records = ref<SpuData[]>([])
 let spu = ref<any>()
 let sku = ref<any>()
+let dialogVisible = ref<boolean>(false)
+let skuArr = ref<SkuData[]>([])
 
 watch(() => categoryStore.c3Id, () => {
     if (!categoryStore.c3Id) return;
@@ -89,7 +106,14 @@ const changeScene = (obj: any) => {
         getSpuInfo()
     }
 }
-
+// 查看sku
+const LookSku = async (row: SpuData) => {
+    dialogVisible.value = true
+    let result: SkuInfoData = await reqSkuList((row.id) as number)
+    if (result.code == 200) {
+        skuArr.value = result.data
+    }
+}
 // 添加sku
 const addSku = (row: SpuData) => {
     scene.value = 2
