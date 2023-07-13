@@ -38,7 +38,7 @@ import SkuForm from './skuForm.vue'
 import SpuForm from './spuForm.vue'
 
 let categoryStore = useCategoryStore()
-let scene = ref<number>(2)
+let scene = ref<number>(0)
 let pageNo = ref<number>(1)
 let pageSize = ref<number>(3)
 let total = ref<number>(0)
