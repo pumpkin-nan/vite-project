@@ -119,7 +119,6 @@ const save = async () => {
     //     }
     // }, [])
 
-
     skuParams.skuAttrValueList = attrArr
 
 

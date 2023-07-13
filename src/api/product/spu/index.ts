@@ -11,7 +11,7 @@ enum API {
     UPDATESPU_URL = '/admin/product/updateSpuInfo',
     ADDSKU_URL = '/admin/product/saveSkuInfo',
     SKULIST_URL = '/admin/product/findBySpuId/',
-    DELETESPU_URL = '/admin/product/deleteSpu/'
+    DELETESPU_URL = '/admin/product/deleteSpu/',
 }
 
 export const reqSpuInfo = (page: number, limit: number, category3Id: number | string) => request.get<any, SpuInfoResponseData>(API.SPUINFO_URL + `${page}/${limit}?category3Id=${category3Id}`)
